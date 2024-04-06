@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl 127.0.0.1:5000 -X POST -d "SELECT region, CONCAT(ROUND((COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) * 100, 2), '%') AS percentage FROM smoking WHERE region IS NOT NULL AND region != '' GROUP BY region ORDER BY (COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) DESC;"
