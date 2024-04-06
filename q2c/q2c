@@ -1,4 +1,9 @@
+(c)
 # SQL query to calculate the percentage of smokers by location.
+DATABASE_NAME="smoking_data"
+TABLE_NAME="smoking"
+MYSQL_USER="root"
+
 SQL_QUERY="SELECT region, 
                   CONCAT(ROUND((COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) * 100, 2), '%') AS percentage 
            FROM $TABLE_NAME 
@@ -9,3 +14,7 @@ SQL_QUERY="SELECT region,
 # Execute the SQL query using mysql command
 echo "Calculating the percentage of smokers by location..."
 mysql --local-infile=1 -u$MYSQL_USER -D$DATABASE_NAME -e "$SQL_QUERY"
+
+
+
+curl 127.0.0.1:5000 -X POST -d "SELECT region, CONCAT(ROUND((COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) * 100, 2), '%') AS percentage FROM smoking WHERE region IS NOT NULL AND region != '' GROUP BY region ORDER BY (COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) DESC;"
