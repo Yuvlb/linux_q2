@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Calculates and compares the percentage of smokers between men and women in the MySQL database.
+curl 127.0.0.1:5000 -X POST -d "SELECT gender, CONCAT(ROUND((COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) * 100, 2), '%') AS percentage FROM smoking GROUP BY gender;"
+
+
+# Calculates the percentage of smokers by marital status in the MySQL database.
+curl 127.0.0.1:5000 -X POST -d "SELECT marital_status, CONCAT(ROUND((COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) * 100, 2), '%') AS percentage FROM smoking GROUP BY marital_status ORDER BY (COUNT(CASE WHEN smoke = 'Yes' THEN 1 END) / COUNT(*)) DESC;"
+
+
+# Calculates the average number of cigarettes smoked daily for each type in the MySQL database.
+curl 127.0.0.1:5000 -X POST -d "SELECT type, ROUND(AVG(((amt_weekdays * 5) + (amt_weekends * 2)) / 7), 2) AS average_cigarettes_per_day FROM smoking GROUP BY type ORDER BY average_cigarettes_per_day DESC;"
+
